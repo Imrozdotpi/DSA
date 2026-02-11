@@ -20,7 +20,6 @@ public class linkedlist {
             return;
         }
         Node ptr = start;
-        System.out.print("List: ");
         while (ptr != null) {
             System.out.print(ptr.data + " -> ");
             ptr = ptr.next;
@@ -29,51 +28,48 @@ public class linkedlist {
     }
 
     static void insertAtBeginning(int value) {
-        Node newNode = new Node(value);
-        newNode.next = start;
-        start = newNode;
+        Node n = new Node(value);
+        n.next = start;
+        start = n;
     }
 
     static void insertAtEnd(int value) {
-        Node newNode = new Node(value);
+        Node n = new Node(value);
         if (start == null) {
-            start = newNode;
+            start = n;
             return;
         }
         Node ptr = start;
-        while (ptr.next != null) {
+        while (ptr.next != null)
             ptr = ptr.next;
-        }
-        ptr.next = newNode;
+        ptr.next = n;
     }
 
-    static void insertAfterValue(int value, int after) {
+    static void insertAfterValue(int value, int key) {
         Node ptr = start;
-        while (ptr != null && ptr.data != after) {
+        while (ptr != null && ptr.data != key)
             ptr = ptr.next;
-        }
         if (ptr == null) {
             System.out.println("Value not found!");
             return;
         }
-        Node newNode = new Node(value);
-        newNode.next = ptr.next;
-        ptr.next = newNode;
+        Node n = new Node(value);
+        n.next = ptr.next;
+        ptr.next = n;
     }
 
-    static void insertBeforeValue(int value, int before) {
+    static void insertBeforeValue(int value, int key) {
         if (start == null) {
             System.out.println("List is empty!");
             return;
         }
-        if (start.data == before) {
+        if (start.data == key) {
             insertAtBeginning(value);
             return;
         }
         Node prev = null;
         Node curr = start;
-
-        while (curr != null && curr.data != before) {
+        while (curr != null && curr.data != key) {
             prev = curr;
             curr = curr.next;
         }
@@ -81,9 +77,9 @@ public class linkedlist {
             System.out.println("Value not found!");
             return;
         }
-        Node newNode = new Node(value);
-        prev.next = newNode;
-        newNode.next = curr;
+        Node n = new Node(value);
+        prev.next = n;
+        n.next = curr;
     }
 
     static void deleteAtBeginning() {
@@ -104,9 +100,8 @@ public class linkedlist {
             return;
         }
         Node ptr = start;
-        while (ptr.next.next != null) {
+        while (ptr.next.next != null)
             ptr = ptr.next;
-        }
         ptr.next = null;
     }
 
@@ -132,6 +127,43 @@ public class linkedlist {
         prev.next = curr.next;
     }
 
+    static void deleteAfterValue(int key) {
+        if (start == null) {
+            System.out.println("List is empty!");
+            return;
+        }
+        Node ptr = start;
+        while (ptr != null && ptr.data != key)
+            ptr = ptr.next;
+        if (ptr == null || ptr.next == null) {
+            System.out.println("Deletion not possible!");
+            return;
+        }
+        ptr.next = ptr.next.next;
+    }
+
+    static void deleteBeforeValue(int key) {
+        if (start == null || start.next == null) {
+            System.out.println("Deletion not possible!");
+            return;
+        }
+        if (start.next.data == key) {
+            start = start.next;
+            return;
+        }
+        Node prev = null;
+        Node curr = start;
+        while (curr.next != null && curr.next.data != key) {
+            prev = curr;
+            curr = curr.next;
+        }
+        if (curr.next == null) {
+            System.out.println("Value not found!");
+            return;
+        }
+        prev.next = curr.next;
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int choice;
@@ -145,8 +177,10 @@ public class linkedlist {
             System.out.println("5 Delete at beginning");
             System.out.println("6 Delete at end");
             System.out.println("7 Delete value");
-            System.out.println("8 Display");
-            System.out.println("9 Exit");
+            System.out.println("8 Delete after value");
+            System.out.println("9 Delete before value");
+            System.out.println("10 Display");
+            System.out.println("11 Exit");
 
             choice = sc.nextInt();
 
@@ -173,9 +207,15 @@ public class linkedlist {
                     deleteValue(sc.nextInt());
                     break;
                 case 8:
-                    display();
+                    deleteAfterValue(sc.nextInt());
                     break;
                 case 9:
+                    deleteBeforeValue(sc.nextInt());
+                    break;
+                case 10:
+                    display();
+                    break;
+                case 11:
                     System.out.println("Thank you!");
                     return;
                 default:
